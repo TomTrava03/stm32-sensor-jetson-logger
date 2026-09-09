@@ -24,7 +24,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "dht11.h"
 #include <stdio.h>
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,7 +39,8 @@
 #define HEARTBEAT_INTERVAL_MS 500U
 #define BUTTON_DEBOUNCE_MS 50U
 #define TELEMETRY_INTERVAL_MS 1000U
-#define TELEMETRY_BUFFER_SIZE 96U
+#define TELEMETRY_BUFFER_SIZE 160U
+#define DHT11_READ_INTERVAL_MS 2000U
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,6 +58,7 @@ static uint32_t last_button_event_ms = 0U;
 static uint32_t last_telemetry_ms = 0U;
 static uint32_t telemetry_counter = 0U;
 static char telemetry_buffer[TELEMETRY_BUFFER_SIZE];
+static uint32_t last_dht11_read_ms = 0U;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,7 +80,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  DHT11_Status dht11_status;
+  dht11_data_t dht11_data = {0};
+  bool dht11_data_valid = false;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,7 +106,9 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-
+	dht11_status = dht11_init();
+	if (dht11_status != DHT11_OK)
+		Error_Handler();
   /* USER CODE END 2 */
 
   /* Initialize leds */
@@ -123,6 +131,14 @@ int main(void)
 		last_heartbeat_ms = now_ms;
 		BSP_LED_Toggle(LED2);
 	  }
+
+	  if ((uint32_t)(now_ms - last_dht11_read_ms) >= DHT11_READ_INTERVAL_MS)
+	  {
+		  last_dht11_read_ms = now_ms;
+		  dht11_status = dht11_read(&dht11_data);
+		  dht11_data_valid = dht11_status == DHT11_OK;
+	  }
+
 	  if ((uint32_t)(now_ms - last_telemetry_ms) >= TELEMETRY_INTERVAL_MS)
 	  {
 		  int message_length;
@@ -132,10 +148,16 @@ int main(void)
 		  message_length = snprintf(
 				  telemetry_buffer,
 				  sizeof(telemetry_buffer),
-				  "counter=%lu button_presses=%lu uptime_ms=%lu\r\n",
+				  "counter=%lu button_presses=%lu uptime_ms=%lu "
+				  "dht11_valid=%u dht11_status=%d temperature_dec=%d "
+				  "humidity_dec=%u\r\n",
 				  (unsigned long)telemetry_counter,
 				  (unsigned long)button_press_count,
-				  (unsigned long)now_ms);
+				  (unsigned long)now_ms,
+				  (unsigned int)dht11_data_valid,
+				  (int)dht11_status,
+				  (int)dht11_data.temperature_dec,
+				  (unsigned int)dht11_data.humidity_dec);
 
 		  if ((message_length > 0) &&
 				  (message_length < (int)sizeof(telemetry_buffer)))
