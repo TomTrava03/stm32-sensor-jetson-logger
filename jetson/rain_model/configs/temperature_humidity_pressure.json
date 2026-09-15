@@ -1,0 +1,7 @@
+{
+  "features": [
+    "temperature",
+    "humidity",
+    "pressure"
+  ]
+}

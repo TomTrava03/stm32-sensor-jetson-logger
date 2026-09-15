@@ -327,6 +327,52 @@
 - Remote SSH GitHub
 - Branch `main`
 
+## Python e pipeline del dataset meteo
+
+- Ambiente virtuale Python
+- File `requirements.txt`
+- Variabili d'ambiente e file `.env`
+- `python-dotenv`
+- Modulo `pathlib` e classe `Path`
+- Type hint
+- `dict[str, Any]`
+- Eccezioni concatenate con `raise ... from`
+- Libreria `requests`
+- Parametri di una richiesta HTTP GET
+- Timeout HTTP
+- Validazione della risposta JSON
+- Accesso sicuro ai dizionari con `.get()`
+- Comprensione di lista
+- Serializzazione JSON
+- Creazione ricorsiva delle directory genitore
+- Context manager `with`
+- `pandas.DataFrame`
+- Selezione e rinomina delle colonne
+- Conversione dei timestamp con `pandas.to_datetime`
+- Timestamp UTC timezone-aware
+- Ordinamento cronologico
+- Rilevamento dei timestamp duplicati
+- Esportazione CSV
+- Funzione orchestratrice di una pipeline
+- Valore di ritorno coerente con il type hint
+- Modulo `argparse`
+- Raggruppamento degli import standard e di terze parti
+- Argomenti nominati della riga di comando
+- Conversione degli argomenti con il parametro `type`
+- Oggetto `argparse.Namespace`
+- Funzione `main`
+- Entry point `if __name__ == "__main__"`
+- Differenza tra un metodo e la sua invocazione con `()`
+- Numero di righe di un `DataFrame` tramite `len`
+- Controllo di qualita del dataset
+- Valori mancanti
+- Duplicati temporali
+- Frequenza della classe positiva
+- Suddivisione cronologica train, validation e test
+- Data leakage nelle serie temporali
+- Variabile target binaria
+- Orizzonte di previsione
+
 ## Hardware e strumenti
 
 - NUCLEO-F446RE

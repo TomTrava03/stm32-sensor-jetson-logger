@@ -1,6 +1,9 @@
 embedded-sensor-node-jetson-logger.md
 embedded-sensor-node-jetson-logger.html
 
+# env
+.env
+
 # STM32CubeIDE workspace
 .metadata/
 
@@ -33,3 +36,13 @@ Release/
 
 # CubeIDE machine-local peripheral view
 **/.settings/com.st.stm32cube.ide.mcu.sfrview.prefs
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Generated datasets and model artifacts
+data/weather/raw/
+data/weather/processed/
+jetson/rain_model/artifacts/

@@ -1,0 +1,1 @@
+"""Prediction entry points for the rain model."""
